@@ -1,0 +1,66 @@
+HELP.md
+target/
+.mvn/
+mvnw
+mvnw.cmd
+
+# Compiled files and logs
+*.class
+*.log
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+*.ctxt
+.mtj.tmp/
+
+# IDE - Eclipse/STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+# IDE - IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# IDE - VS Code
+.vscode/
+
+# IDE - NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+# Maven specific
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Exceptions
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+!.mvn/wrapper/maven-wrapper.jar
+
+# JVM crash logs
+hs_err_pid*
+replay_pid*
