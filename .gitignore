@@ -64,3 +64,9 @@ buildNumber.properties
 # JVM crash logs
 hs_err_pid*
 replay_pid*
+
+# H2 Database files
+*.db
+*.mv.db
+*.trace.db
+data/

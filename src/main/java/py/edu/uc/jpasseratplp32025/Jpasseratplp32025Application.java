@@ -5,7 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "py.edu.uc.jpasseratplp32025.controller")
+// @ComponentScan(basePackages = "py.edu.uc.jpasseratplp32025.controller")
+@ComponentScan(basePackages = "py.edu.uc.jpasseratplp32025")
 public class Jpasseratplp32025Application {
 
 	public static void main(String[] args) {
