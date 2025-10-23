@@ -72,4 +72,20 @@ public class PersonaService {
             );
         }
     }
+
+    // =================================================================
+    // NUEVA FUNCIONALIDAD: Buscar por Nombre (Case Insensitive)
+    // =================================================================
+    /**
+     * Busca personas por un fragmento de nombre, sin distinguir entre mayúsculas y minúsculas.
+     *
+     * @param nombreFragmento La cadena a buscar.
+     * @return Lista de PersonaJpa que coinciden.
+     */
+    public List<PersonaJpa> buscarPorNombre(String nombreFragmento) {
+        if (nombreFragmento == null || nombreFragmento.trim().isEmpty()) {
+            return personaRepository.findAll();
+        }
+        return personaRepository.findByNombreContainingIgnoreCase(nombreFragmento);
+    }
 }

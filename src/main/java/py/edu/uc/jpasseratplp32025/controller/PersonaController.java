@@ -55,4 +55,22 @@ public class PersonaController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    /**
+     * Busca personas por nombre de forma case-insensitive.
+     * Endpoint: GET /api/personas/buscar?nombre=fragmento
+     * @param nombreFragmento Fragmento de nombre a buscar.
+     * @return Lista de personas que coinciden.
+     */
+    @GetMapping("/buscar")
+    public ResponseEntity<List<PersonaJpa>> buscarPorNombre(
+            @RequestParam(name = "nombre") String nombreFragmento) {
+
+        List<PersonaJpa> personas = personaService.buscarPorNombre(nombreFragmento);
+
+        if (personas.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(personas, HttpStatus.OK);
+    }
 }
