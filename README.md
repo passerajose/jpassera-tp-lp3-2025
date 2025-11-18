@@ -1,17 +1,19 @@
 # jpasseratplp32025
 
-Proyecto Spring Boot para gestión de personas y empleados (herencia JPA, validaciones y endpoints REST).
+Proyecto Spring Boot para gestión de personas y empleados (herencia JPA, validaciones, gestión de permisos y endpoints REST).
 
 ## Requisitos
 
 - Java 21
 - Maven (o usar `./mvnw` / `mvnw.cmd`)
-- Puerto por defecto: 8080
+- Puerto por defecto: **8080**
+
+---
 
 ## Ejecutar la aplicación
 
 1. Compilar y ejecutar con Maven wrapper:
-
+    
 ```bash
 ./mvnw spring-boot:run
 ```
@@ -22,58 +24,144 @@ o con Maven instalado:
 mvn spring-boot:run
 ```
 
+2. Clase principal: `py.edu.uc.jpasseratplp32025.Jpasseratplp32025Application`
+3. Configuración de BD/H2: `application.properties`
 
-2. Clase principal: [py.edu.uc.jpasseratplp32025.Jpasseratplp32025Application](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)   
-3. Configuración de BD/H2: [application.properties](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
+---
 
-## Arquitectura (resumen)
+## Arquitectura del Proyecto (Spring + JPA Inheritance)
 
-- Entidad base (Single Table Inheritance): [py.edu.uc.jpasseratplp32025.entity.PersonaJpa](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-    - Subclases:
-        - [py.edu.uc.jpasseratplp32025.entity.EmpleadoTiempoCompleto](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-        - [py.edu.uc.jpasseratplp32025.entity.EmpleadoPorHora](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-        - [py.edu.uc.jpasseratplp32025.entity.Contratista](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-- Repositorios JPA:
-    - [py.edu.uc.jpasseratplp32025.repository.PersonaRepository](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-    - Repositorios específicos (ej. [EmpleadoTiempoCompletoRepository](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html))
-- Servicios:
-    - Lógica y validaciones: [py.edu.uc.jpasseratplp32025.service.PersonaService](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-    - Servicio para EmpleadoTiempoCompleto con batch y validaciones: [py.edu.uc.jpasseratplp32025.service.EmpleadoTiempoCompletoService](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-    - Otros: [NominaService](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html), [RemuneracionesService](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-- Controladores REST:
-    - Personas: [py.edu.uc.jpasseratplp32025.controller.PersonaController](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-    - Empleados: [py.edu.uc.jpasseratplp32025.controller.EmpleadoTiempoCompletoController](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-    - Contratistas: [py.edu.uc.jpasseratplp32025.controller.ContratistaController](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-    - Remuneraciones: [py.edu.uc.jpasseratplp32025.controller.RemuneracionesController](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-- Manejo global de errores: [py.edu.uc.jpasseratplp32025.exception.GlobalExceptionHandler](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) y DTO de errores [ErrorResponseDto](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-- DTOs de respuesta: [EmpleadoTiempoCompletoImpuestoDto](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html), [BaseDto](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html), etc.
+La arquitectura sigue el patrón MVC y se extiende para manejar complejidad de negocio y estructurar el código con jerarquías.
 
-Notas:
+### Jerarquía de Entidades (JPA Single Table)
 
-- Se utiliza estrategia JPA SINGLE_TABLE ([PersonaJpa](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)) — algunas columnas de subclases están marcadas [nullable = true](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) para evitar errores de integridad cuando la fila corresponde a otra subclase.
-- Validaciones: Jakarta Bean Validation + validaciones de negocio en los métodos [validarDatosEspecificos()](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) de cada entidad.
-- Excepción de negocio para fecha de nacimiento futura: [py.edu.uc.jpasseratplp32025.exception.FechaNacimientoFuturaException](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
+- **Entidad base:** `py.edu.uc.jpasseratplp32025.entity.PersonaJpa`
+    
+    - **Empleado Base (Abstracto):** `py.edu.uc.jpasseratplp32025.entity.Empleado` (Implementa `Permisionable`)
+        
+        - `py.edu.uc.jpasseratplp32025.entity.EmpleadoTiempoCompleto`
+            
+        - `py.edu.uc.jpasseratplp32025.entity.EmpleadoPorHora`
+            
+        - `py.edu.uc.jpasseratplp32025.entity.Contratista`
+            
+        - **Gerente (Rol Especial):** `py.edu.uc.jpasseratplp32025.entity.Gerente` (Implementa `AprobadoGerencial`)
+            
+- **Interfaces de Negocio:** `py.edu.uc.jpasseratplp32025.interfaces.Permisionable`, `py.edu.uc.jpasseratplp32025.interfaces.AprobadoGerencial`, `py.edu.uc.jpasseratplp32025.interfaces.Mapeable`
+    
+### Componentes de Servicio
 
-## Endpoints principales y ejemplos cURL
+| **Capa/Paquete** | **Clases relevantes**                                                                                                                                                                                                                                | **Descripción**                                                                                                               |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **`controller`** | `BaseEmpleadoController`, `GerenteController`,<br>`ContratistaController`,<br>`PersonaController`,<br>`EmpleadoPorHorasController`,<br>`EmpleadoTiempoCompletoController`,<br>`NominaController`,<br>`RemuneracController`,<br>`IndexController`<br> | Jerarquía REST para manejar operaciones CRUD y la solicitud de permisos (`procesarSolicitudPermiso`).                         |
+| **`exception`**  | `GlobalExceptionHandler`, `DiasInsuficientesException`, `FechaNacimientoFuturaException`, `EmpleadoNoEncontradoException`, `PermisoNoConcedidoException`                                                                                             | Manejo de errores centralizado, asegurando respuestas JSON (4xx/5xx).                                                         |
+| **`mapper`**     | `BaseMapper`, `GerenteMapper`, `EmpleadoIntegracionMapper`, `IntegracionMapper`, `EmpleadoPorHoraMapper`, `EmpleadoTiempoCompletoMapper`                                                                                                             | Jerarquía para mapear entidades y DTOs, especialmente en integración de datos (e.g., `EmpleadoExterno` a entidades internas). |
+| **`service`**    | `GerenteService`, `EmpleadoTiempoCompletoService`, `EmpleadoPorHoraService`, `ContratistaService`, `NominaService`, `RemuneracionesService`, `PersonaService`                                                                                        | Contiene la lógica de negocio, validaciones complejas (ej. _batch_ de empleados, días de permiso).                            |
+| **`util`**       | `NominaUtils`, `MapeableFactory`, `MapeableProcessor`                                                                                                                                                                                                | Utilidades estáticas para cálculos de nómina, días de permiso y generación de reportes.                                       |
 
-Nota: usar header `Content-Type: application/json`. Fechas en formato ISO `yyyy-MM-dd`.
+---
 
-1. Crear una persona genérica (POST /api/personas)
+## Reglas de Validación de Datos (Importante)
+
+La API aplica validaciones de datos y de negocio en todos los _endpoints_ de creación y actualización (`POST`/`PUT`).
+
+|**Atributo**|**Regla de Validación**|**Excepción de Negocio (HTTP Status)**|
+|---|---|---|
+|**`fechaDeNacimiento`**|**No puede ser posterior a la fecha actual.**|`FechaNacimientoFuturaException` (400 Bad Request)|
+|**Días de Permiso**|**Empleados:** Máximo 20 días al año. **Gerentes:** No tienen límite.|`DiasInsuficientesException` (400 Bad Request)|
+|**ID/Entidad**|Debe existir al consultar, actualizar o eliminar.|`EmpleadoNoEncontradoException` (404 Not Found)|
+|**Campos obligatorios**|Validación estándar de Jakarta Bean Validation.|`MethodArgumentNotValidException` (400 Bad Request)|
+
+### Estructura de Error
+
+Todos los errores de validación, negocio o recursos no encontrados son devueltos como un objeto JSON estructurado:
+
+```json
+{
+  "timestamp": "YYYY-MM-DDTHH:MM:SS.sss",
+  "status": 400,
+  "message": "Mensaje específico de la excepción (ej. La fecha de nacimiento no puede ser en el futuro)",
+  "path": "uri=/api/empleados",
+  "error": "Validation Error" 
+}
+```
+
+---
+
+## Endpoints Clave y Uso Por Tipo de Empleado
+
+Nota: usar header `Content-Type: application/json`. Fechas en formato ISO `yyyy-MM-dd`.
+
+### 1. Gestión de Gerentes
+
+|**Endpoint**|**Descripción**|
+|---|---|
+|`POST /api/gerentes`|Crea un nuevo Gerente.|
+|`PUT /api/gerentes/{id}`|Actualiza datos de un Gerente.|
+|`POST /api/gerentes/{id}/solicitar-permiso`|Solicita permiso para un Gerente (no aplica límite de días).|
+|`GET /api/gerentes/{id}/nomina-departamento`|Calcula la nómina total del departamento a cargo del Gerente.|
+
+**Ejemplo de Creación de Gerente:**
 
 ```bash
-curl -X POST http://localhost:8080/api/personas \
+curl -X POST http://localhost:8080/api/gerentes \
   -H "Content-Type: application/json" \
   -d '{
-    "nombre":"Juan",
-    "apellido":"Pérez",
-    "fechaDeNacimiento":"1990-01-15",
-    "numeroDeCedula":"1234567"
+    "nombre":"Carla",
+    "apellido":"Méndez",
+    "fechaDeNacimiento":"1988-11-10",
+    "numeroDeCedula":"9876543",
+    "fechaIngreso":"2015-06-01",
+    "departamentoACargo":"IT"
   }'
 ```
 
-Controlador: [py.edu.uc.jpasseratplp32025.controller.PersonaController](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
+### 2. Gestión de Contratistas
 
-2. Crear empleado de tiempo completo (POST /api/empleados)
+|**Endpoint**|**Descripción**|
+|---|---|
+|`POST /api/contratistas`|Crea un nuevo Contratista (aplica validación de `fechaDeNacimiento`).|
+|`GET /api/contratistas`|Lista todos los Contratistas.|
+|`GET /api/contratistas/{id}`|Obtiene un Contratista por ID (lanza `EmpleadoNoEncontradoException` si no existe).|
+|`PUT /api/contratistas/{id}`|Actualiza un Contratista (aplica validación de `fechaDeNacimiento`).|
+|`DELETE /api/contratistas/{id}`|Elimina un Contratista.|
+|`POST /api/contratistas/{id}/solicitar-permiso`|Solicita permiso para el Contratista. **Aplica límite de 20 días/año.**|
+|`GET /api/contratistas/vigentes`|Lista los Contratistas con contratos activos.|
+|`GET /api/contratistas/nomina-total`|Calcula la nómina total para todos los Contratistas.|
+
+**Ejemplo de Creación de Contratista**
+
+```bash
+curl -X POST http://localhost:8080/api/contratistas \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nombre":"Marta",
+    "apellido":"Ríos",
+    "fechaDeNacimiento":"1995-03-25",
+    "numeroDeCedula":"10203040",
+    "fechaInicioContrato":"2024-01-01",
+    "fechaFinContrato":"2024-12-31"
+  }'
+```
+
+### 3. Gestión de Empleados de Tiempo Completo
+
+|**Endpoint**|**Descripción**|
+|---|---|
+|`POST /api/empleados`|Crea un nuevo Empleado de Tiempo Completo (aplica validación de `fechaDeNacimiento`).|
+|`POST /api/empleados/batch`|Carga masiva de Empleados de Tiempo Completo.|
+|`GET /api/empleados`|Lista todos los Empleados.|
+|`GET /api/empleados/{id}`|Obtiene un Empleado por ID.|
+|`PUT /api/empleados/{id}`|Actualiza un Empleado (aplica validación de `fechaDeNacimiento`).|
+|`DELETE /api/empleados/{id}`|Elimina un Empleado.|
+|`POST /api/empleados/{id}/solicitar-permiso`|Solicita permiso para el Empleado. **Aplica límite de 20 días/año.**|
+|`GET /api/empleados/{id}/salario-neto`|Calcula el salario neto después de deducciones.|
+|`GET /api/empleados/{id}/impuestos`|Devuelve información detallada del impuesto en un DTO.|
+|`GET /api/empleados/departamento?nombre=X`|Busca empleados por departamento.|
+|`GET /api/empleados/vigentes`|Lista empleados con contratos vigentes.|
+|`GET /api/empleados/nomina-total`|Calcula la nómina total para Empleados de Tiempo Completo.|
+
+**Ejemplo de Creación de Empleado de Tiempo Completo**
 
 ```bash
 curl -X POST http://localhost:8080/api/empleados \
@@ -88,90 +176,61 @@ curl -X POST http://localhost:8080/api/empleados \
   }'
 ```
 
-Controlador: [py.edu.uc.jpasseratplp32025.controller.EmpleadoTiempoCompletoController](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
+### 4. Gestión de Empleados Por Hora
 
-3. Carga en batch de empleados (POST /api/empleados/batch)
+|**Endpoint**|**Descripción**|
+|---|---|
+|`POST /api/empleados-por-hora`|Crea un nuevo Empleado por Hora (aplica validación de `fechaDeNacimiento`).|
+|`GET /api/empleados-por-hora`|Lista todos los Empleados por Hora.|
+|`GET /api/empleados-por-hora/{id}`|Obtiene un Empleado por ID.|
+|`PUT /api/empleados-por-hora/{id}`|Actualiza un Empleado (aplica validación de `fechaDeNacimiento`).|
+|`DELETE /api/empleados-por-hora/{id}`|Elimina un Empleado.|
+|`POST /api/empleados-por-hora/{id}/solicitar-permiso`|Solicita permiso para el Empleado. **Aplica límite de 20 días/año.**|
+|`GET /api/empleados-por-hora/consulta?horas=X`|Lista empleados que hayan trabajado más de un número de horas específico.|
+|`GET /api/empleados-por-hora/vigentes`|Lista empleados con contratos vigentes.|
+|`GET /api/empleados-por-hora/nomina-total`|Calcula la nómina total para Empleados por Hora.|
+
+**Ejemplo de Consulta por Horas Trabajadas**
 
 ```bash
-curl -X POST http://localhost:8080/api/empleados/batch \
+curl -X GET "http://localhost:8080/api/empleados-por-hora/consulta?horas=40"
+```
+
+### 5. Solicitud de Permisos (Validación de Días)
+
+|**Endpoint**|**Descripción**|
+|---|---|
+|`POST /api/empleados/{id}/solicitar-permiso`|Solicita permiso para Empleados de Tiempo Completo.|
+|`POST /api/contratistas/{id}/solicitar-permiso`|Solicita permiso para Contratistas.|
+|`POST /api/empleados-por-hora/{id}/solicitar-permiso`|Solicita permiso para Empleados por Hora.|
+
+**Ejemplo de Solicitud de Permiso (puede lanzar DiasInsuficientesException):**
+
+```bash
+curl -X POST http://localhost:8080/api/empleados/1/solicitar-permiso \
   -H "Content-Type: application/json" \
-  -d '[{ "nombre":"Ana", "apellido":"Gómez", "fechaDeNacimiento":"1990-05-15", "numeroDeCedula":"1111111", "salarioMensual":3000000, "departamento":"Ventas" }, { "nombre":"Carlos", "apellido":"Ramírez", "fechaDeNacimiento":"1985-10-20", "numeroDeCedula":"2222222", "salarioMensual":4500000, "departamento":"IT" }]'
+  -d '{
+    "fechaInicio":"2025-12-01",
+    "fechaFin":"2025-12-05",
+    "tipoPermiso":"VACACIONES"
+  }'
 ```
 
-- El servicio valida duplicados en el mismo lote y existencia previa en BD.
-- Servicio: [py.edu.uc.jpasseratplp32025.service.EmpleadoTiempoCompletoService](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
+### 6. Consultas de Nómina / Utilidades
 
-4. Consultar impuestos de un empleado (GET /api/empleados/{id}/impuestos)
-
-```bash
-curl -X GET http://localhost:8080/api/empleados/1/impuestos
-```
-
-- Devuelve DTO: [py.edu.uc.jpasseratplp32025.dto.EmpleadoTiempoCompletoImpuestoDto](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-
-5. Listado polimórfico de remuneraciones (GET /api/remuneraciones/todos)
-
-```bash
-curl -X GET http://localhost:8080/api/remuneraciones/todos
-```
-
-- Servicio que mapea todas las filas de [personas](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) a [EmpleadoDto](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) usando [obtenerInformacionCompleta()](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) polimórfico.
-- Servicio: [py.edu.uc.jpasseratplp32025.service.RemuneracionesService](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-
-## Manejo de errores
-
-- Errores de validación y parsing JSON devuelven [ErrorResponseDto](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) (JSON) con campos: [timestamp](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html), [status](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html), [message](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html), [path](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html), [error](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html).
-    - Global handler: [py.edu.uc.jpasseratplp32025.exception.GlobalExceptionHandler](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-    - DTO: [ErrorResponseDto.java](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-
-Ejemplo de error por fecha futura (HTTP 400):
-
-```bash
-{
-  "timestamp":"2025-10-17T14:33:09.511",
-  "status":400,
-  "message":"La fecha de nacimiento no puede ser en el futuro",
-  "path":"uri=/api/personas",
-  "error":"Validation Error"
-}
-```
-
-Ejemplo operación batch con datos inválidos (HTTP 400):
-```bash
-[
-	{
-		"nombre": "Falla",
-		"apellido": "Cedula",
-		"fechaDeNacimiento": "1985-01-01",
-		"numeroDeCedula": "01",
-		"salarioMensual": 3000000.00,
-		"departamento": "Contabilidad"
-	},
-	{
-		"nombre": "Juan",
-		"apellido": "Valido",
-		"fechaDeNacimiento": "1999-12-31",
-		"numeroDeCedula": "123456",
-		"salarioMensual": 4000000.00,
-		"departamento": "Marketing"
-	}
-]
-```
-Respuesta:
-```bash
-Error en la carga masiva: Fallo de Bean Validation: numeroDeCedula: El número de cédula debe ser un valor numérico positivo (mayor a 0) de entre 1 y 20 dígitos.
-```
-
-## Utilidades
-
-- H2 Console: [http://localhost:8080/h2-console](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) (configurada en [application.properties](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html))
-- POM / dependencias: [pom.xml](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
+|**Endpoint**|**Descripción**|
+|---|---|
+|`GET /api/empleados/nomina-total`|Retorna la suma total de salarios brutos para empleados de tiempo completo.|
+|`GET /api/contratistas/nomina-total`|Retorna la suma total de salarios brutos para contratistas.|
+|`GET /api/empleados-por-hora/nomina-total`|Retorna la suma total de salarios brutos para empleados por hora.|
+|`GET /api/remuneraciones/todos`|Listado polimórfico de remuneraciones.|
 
 ---
 
-Archivos relevantes:
+## Utilidades
 
-- Aplicación: [Jpasseratplp32025Application.java](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-- Entidad base: [PersonaJpa.java](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-- Controladores: [PersonaController.java](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html), [EmpleadoTiempoCompletoController.java](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
-- Servicios: [PersonaService.java](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html), [EmpleadoTiempoCompletoService.java](vscode-file://vscode-app/c:/Users/espin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
+- H2 Console: `http://localhost:8080/h2-console`
+- Archivos relevantes:
+	- `py.edu.uc.jpasseratplp32025.exception.GlobalExceptionHandler.java`
+	- `py.edu.uc.jpasseratplp32025.util.NominaUtils.java`
+	- `py.edu.uc.jpasseratplp32025.controller.BaseEmpleadoController.java`
