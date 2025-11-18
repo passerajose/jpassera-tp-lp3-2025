@@ -14,22 +14,36 @@ import jakarta.persistence.DiscriminatorValue;
 import java.time.LocalDate;
 import java.math.BigDecimal; // Necesario para calcularSalario y calcularImpuestos
 import java.math.RoundingMode;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+//@JsonTypeInfo(
+//        use = JsonTypeInfo.Id.NAME, // Usar el nombre de la subclase
+//        include = JsonTypeInfo.As.PROPERTY, // Incluir como una propiedad en el JSON
+//        property = "tipo_persona", // El nombre de la propiedad en el JSON
+//        defaultImpl = Gerente.class,
+//        visible = true
+//)
+//@JsonSubTypes({
+//        @JsonSubTypes.Type(value = Gerente.class, name = "GERENTE"),
+//        @JsonSubTypes.Type(value = EmpleadoTiempoCompleto.class, name = "EMPLEADO"),
+//        @JsonSubTypes.Type(value = Contratista.class, name = "CONTRATISTA"),
+//        @JsonSubTypes.Type(value = EmpleadoPorHora.class, name = "HORA"),
+//})
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "personas")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE) //  crea una única tabla (llamada personas) que contiene columnas para todos los campos de la clase base y todos los campos específicos de sus subclases (los que heredan de PersonaJpa)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_persona", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("PERSONA")
 public abstract class PersonaJpa { // <<-- CLASE ES ABSTRACTA
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

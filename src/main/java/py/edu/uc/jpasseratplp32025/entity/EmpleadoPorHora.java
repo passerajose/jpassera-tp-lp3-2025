@@ -9,26 +9,40 @@ import java.time.LocalDate;
 
 @Entity
 @DiscriminatorValue("HORA")
-public class EmpleadoPorHora extends PersonaJpa {
+public class EmpleadoPorHora extends Empleado {
 
     private static final int HORAS_NORMALES = 40;
     private static final BigDecimal PORCENTAJE_DEDUCCION = new BigDecimal("0.02");
     private static final BigDecimal BONUS_HORA_EXTRA = new BigDecimal("1.50");
 
-    // Permitir NULL porque usamos SINGLE_TABLE y otras subclases no proporcionarán estos valores
+    // Mantener este campo, pero su actualización la haremos en los setters y el servicio.
+    @Column(name = "salario_mensual", nullable = true, precision = 10, scale = 2)
+    private BigDecimal salarioMensual;
+
     @Column(name = "tarifa_por_hora", nullable = true, precision = 10, scale = 2)
     private BigDecimal tarifaPorHora;
 
     @Column(name = "horas_trabajadas", nullable = true)
     private Integer horasTrabajadas;
 
+    //
     // Constructores
-    public EmpleadoPorHora() { super(); }
-    public EmpleadoPorHora(String nombre, String apellido, LocalDate fechaDeNacimiento, String numeroDeCedula,
-                           BigDecimal tarifaPorHora, Integer horasTrabajadas) {
-        super(nombre, apellido, fechaDeNacimiento, numeroDeCedula);
+    //
+    public EmpleadoPorHora() {
+        super();
+        this.salarioMensual = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public EmpleadoPorHora(String nombre, String apellido, LocalDate fechaDeNacimiento,
+                           String numeroDeCedula, BigDecimal tarifaPorHora, Integer horasTrabajadas,
+                           LocalDate fechaFinContrato) {
+        super(nombre, apellido, fechaDeNacimiento, numeroDeCedula,
+                LocalDate.now(), // fechaIngreso
+                10, // diasVacacionesIniciales por defecto
+                fechaFinContrato);
         this.tarifaPorHora = tarifaPorHora;
         this.horasTrabajadas = horasTrabajadas;
+        this.salarioMensual = calcularSalario(); // Se inicializa con el cálculo
     }
 
     //
@@ -38,7 +52,7 @@ public class EmpleadoPorHora extends PersonaJpa {
     @Override
     public BigDecimal calcularSalario() {
         if (this.horasTrabajadas == null || this.horasTrabajadas <= 0 || this.tarifaPorHora == null) {
-            return BigDecimal.ZERO;
+            return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
         }
 
         BigDecimal horasNormalesBD = new BigDecimal(Math.min(this.horasTrabajadas, HORAS_NORMALES));
@@ -78,13 +92,28 @@ public class EmpleadoPorHora extends PersonaJpa {
         String datos = super.obtenerInformacionCompleta();
         if (!validarDatosEspecificos()) {
             return datos + ", ERROR: Datos de Empleado Inválidos.";
-        } 
+        }
         return datos + String.format(", Tipo: Por Hora, Tarifa: %s, Horas Trabajadas: %d, Salario Total: %s, Impuestos: %s",
                 this.tarifaPorHora.toString(), this.horasTrabajadas, this.calcularSalario().toString(), this.calcularImpuestos().toString());
     }
 
+    public BigDecimal getSalarioMensual() {
+        // Si por alguna razón es nulo o cero, forzamos el cálculo antes de devolver.
+        if (salarioMensual == null || salarioMensual.compareTo(BigDecimal.ZERO) == 0) {
+            return calcularSalario();
+        }
+        return salarioMensual;
+    }
+    public void setSalarioMensual(BigDecimal salarioMensual) { this.salarioMensual = salarioMensual; }
+
     public BigDecimal getTarifaPorHora() { return tarifaPorHora; }
-    public void setTarifaPorHora(BigDecimal tarifaPorHora) { this.tarifaPorHora = tarifaPorHora; }
+    public void setTarifaPorHora(BigDecimal tarifaPorHora) {
+        this.tarifaPorHora = tarifaPorHora;
+        this.salarioMensual = calcularSalario(); // <-- Recálculo forzado
+    }
     public Integer getHorasTrabajadas() { return horasTrabajadas; }
-    public void setHorasTrabajadas(Integer horasTrabajadas) { this.horasTrabajadas = horasTrabajadas; }
+    public void setHorasTrabajadas(Integer horasTrabajadas) {
+        this.horasTrabajadas = horasTrabajadas;
+        this.salarioMensual = calcularSalario(); // <-- Recálculo forzado
+    }
 }

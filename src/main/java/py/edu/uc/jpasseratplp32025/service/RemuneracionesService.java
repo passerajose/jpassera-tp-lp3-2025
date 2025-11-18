@@ -2,56 +2,86 @@ package py.edu.uc.jpasseratplp32025.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import py.edu.uc.jpasseratplp32025.dto.EmpleadoDto;
 import py.edu.uc.jpasseratplp32025.entity.PersonaJpa;
 import py.edu.uc.jpasseratplp32025.repository.PersonaRepository;
+import py.edu.uc.jpasseratplp32025.util.NominaUtils; // Asegúrate de que esta clase sea NominaUtils
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+/**
+ * Servicio encargado de la gestión y generación de reportes avanzados de remuneraciones,
+ * utilizando PersonaRepository y métodos estáticos de NominaUtils.
+ */
 @Service
 public class RemuneracionesService {
 
-    // Inyectamos el repositorio de la clase base (PersonaJpa)
-    // Esto es CLAVE para la estrategia SINGLE_TABLE, ya que este repositorio
-    // puede acceder a TODAS las filas de la tabla 'personas' e instanciar
-    // la subclase correcta (polimorfismo).
+    private static final Logger log = LoggerFactory.getLogger(RemuneracionesService.class);
+
     private final PersonaRepository personaRepository;
 
     @Autowired
     public RemuneracionesService(PersonaRepository personaRepository) {
         this.personaRepository = personaRepository;
+        log.info("RemuneracionesService inicializado.");
     }
 
     /**
-     * Obtiene una lista de todos los empleados de la jerarquía, mapeándolos a EmpleadoDto.
-     * Utiliza polimorfismo al llamar obtenerInformacionCompleta() en cada objeto.
-     * * @return Una lista de objetos EmpleadoDto.
+     * Calcula y retorna el total consolidado de días de vacaciones solicitados
+     * por todos los empleados.
+     * * @return El número total de días solicitados.
      */
-    public List<EmpleadoDto> obtenerTodosLosEmpleados() {
-        // 1. Obtener la lista polimórfica de la DB
-        List<PersonaJpa> todasLasPersonas = personaRepository.findAll();
+    public int obtenerTotalDiasVacacionesSolicitados() {
+        log.debug("Obteniendo total de días solicitados...");
+        List<PersonaJpa> todos = personaRepository.findAll();
 
-        // 2. Mapear la lista de PersonaJpa a EmpleadoDto
-        return todasLasPersonas.stream()
-                .map(this::mapToEmpleadoDto)
-                .collect(Collectors.toList());
+        // CORRECCIÓN: Se usa la firma existente en NominaUtils: totalDiasVacacionesSolicitados(List)
+        int total = NominaUtils.totalDiasVacacionesSolicitados(todos);
+        
+        log.info("Total de días de vacaciones solicitados: {}", total);
+        return total;
     }
 
     /**
-     * Método auxiliar para mapear PersonaJpa a EmpleadoDto.
-     * Esta es la clave del ejercicio de mapeo polimórfico.
+     * Genera un reporte JSON de los empleados que han solicitado más de un número
+     * de días especificado (umbral).
+     * * @param umbral El número mínimo de días solicitados para ser incluidos en el reporte.
+     * @return Un String JSON formateado con el reporte.
      */
-    private EmpleadoDto mapToEmpleadoDto(PersonaJpa persona) {
-        return new EmpleadoDto(
-                persona.getId(),
-                persona.getNombre(),
-                persona.getApellido(),
-                persona.getNumeroDeCedula(),
-                // Obtener el nombre de la subclase real (polimorfismo)
-                persona.getClass().getSimpleName(),
-                // Llamar al método polimórfico. Cada subclase retorna su información completa.
-                persona.obtenerInformacionCompleta()
-        );
+    public String generarReporteDiasSolicitadosPorUmbral(int umbral) {
+        log.debug("Generando reporte JSON para días solicitados por encima del umbral: {}", umbral);
+        List<PersonaJpa> todos = personaRepository.findAll();
+
+        // CORRECCIÓN: Se usa la firma existente en NominaUtils: generarReporteJsonPorDiasSolicitados(List, int)
+        // Se asume que el método que intenta usar los días solicitados es este.
+        String reporteJson = NominaUtils.generarReporteJsonPorDiasSolicitados(todos, umbral);
+        
+        log.info("Reporte JSON de días solicitados generado con éxito.");
+        return reporteJson;
+    }
+
+    // ========================================================================
+    // OTROS MÉTODOS EXISTENTES PARA DEMOSTRACIÓN
+    // ========================================================================
+
+    /**
+     * Genera un reporte completo de nómina en formato JSON.
+     * @return JSON con información detallada de nómina y vacaciones.
+     */
+    public String generarReporteCompletoNomina() {
+        log.debug("Generando reporte completo de nómina...");
+        List<PersonaJpa> todos = personaRepository.findAll();
+        return NominaUtils.generarReporteCompleto(todos);
+    }
+    
+    /**
+     * Genera estadísticas de días disponibles en formato JSON.
+     * @return JSON con estadísticas de vacaciones.
+     */
+    public String generarEstadisticasVacaciones() {
+        log.debug("Generando estadísticas de vacaciones...");
+        List<PersonaJpa> todos = personaRepository.findAll();
+        return NominaUtils.generarEstadisticasVacaciones(todos);
     }
 }

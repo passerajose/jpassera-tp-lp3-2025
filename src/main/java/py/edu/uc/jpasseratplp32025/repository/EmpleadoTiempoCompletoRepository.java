@@ -1,9 +1,14 @@
 package py.edu.uc.jpasseratplp32025.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import py.edu.uc.jpasseratplp32025.entity.Contratista;
 import py.edu.uc.jpasseratplp32025.entity.EmpleadoTiempoCompleto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -17,4 +22,8 @@ public interface EmpleadoTiempoCompletoRepository extends JpaRepository<Empleado
      * @return Una lista de EmpleadoTiempoCompleto.
      */
     List<EmpleadoTiempoCompleto> findByDepartamento(String departamento);
+
+    @Query(value = "SELECT * FROM personas WHERE tipo_persona = 'EMPLEADO_TIEMPO_COMPLETO' AND fecha_fin_contrato > :fecha", 
+           nativeQuery = true)
+    List<EmpleadoTiempoCompleto> findByFechaFinContratoAfter(@Param("fecha") LocalDate fecha);
 }

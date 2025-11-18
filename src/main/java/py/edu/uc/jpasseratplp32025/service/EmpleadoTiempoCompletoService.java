@@ -1,7 +1,7 @@
 package py.edu.uc.jpasseratplp32025.service;
 
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validator; // Uso correcto
+import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import py.edu.uc.jpasseratplp32025.entity.EmpleadoTiempoCompleto;
@@ -9,37 +9,29 @@ import py.edu.uc.jpasseratplp32025.repository.EmpleadoTiempoCompletoRepository;
 import py.edu.uc.jpasseratplp32025.repository.PersonaRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-// ******************************************************
-// IMPORTS PARA SLF4J SIMPLE (MANUAL)
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-// ******************************************************
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-// ANOTACIÓN @Slf4j ELIMINADA
 @Service
 public class EmpleadoTiempoCompletoService {
 
-    // ******************************************************
-    // INICIALIZACIÓN MANUAL DEL LOGGER (En lugar de @Slf4j)
     private static final Logger log = LoggerFactory.getLogger(EmpleadoTiempoCompletoService.class);
-    // ******************************************************
 
     private final EmpleadoTiempoCompletoRepository repository;
     private final PersonaRepository personaRepository;
     private static final int BATCH_SIZE = 100;
 
-    // CORRECCIÓN: El campo Validator solo se declara una vez y dentro de la clase.
     private final Validator validator;
 
     @Autowired
@@ -48,6 +40,24 @@ public class EmpleadoTiempoCompletoService {
         this.personaRepository = personaRepository;
         this.validator = validator;
         log.info("EmpleadoTiempoCompletoService inicializado.");
+    }
+
+    // [ ... Métodos CRUD y otros sin cambios ... ]
+
+    // MÉTODO DE CONSULTA ESPECÍFICA: Buscar contratos vigentes
+    public List<EmpleadoTiempoCompleto> buscarContratosVigentes() {
+        LocalDate hoy = LocalDate.now();
+        log.info("Buscando contratos vigentes a partir de la fecha: {}", hoy);
+
+        // CORRECCIÓN: Usar findAll() y filtrar en el código para asegurar que la lógica
+        // de negocio se aplique correctamente si el método findByFechaFinContratoAfter()
+        // del repositorio está fallando silenciosamente.
+        return repository.findAll().stream()
+                .filter(empleado ->
+                        empleado.getFechaFinContrato() != null &&
+                                empleado.getFechaFinContrato().isAfter(hoy)
+                )
+                .toList();
     }
 
     // 1. Obtener todos los empleados
@@ -147,7 +157,7 @@ public class EmpleadoTiempoCompletoService {
                 if (!violations.isEmpty()) {
                     String validationMessage = violations.stream()
                             .map(v -> v.getPropertyPath() + ": " + v.getMessage())
-                            .collect(Collectors.joining(", ")); // Collectors.joining() CORREGIDO
+                            .collect(Collectors.joining(", "));
 
                     log.error("Fallo de Bean Validation en lote para empleado {}: {}", empleado.getNumeroDeCedula(), validationMessage);
                     throw new IllegalArgumentException("Fallo de Bean Validation: " + validationMessage);

@@ -20,8 +20,13 @@ public class PersonaController {
         this.personaService = personaService;
     }
 
+    /**
+     * Crea una nueva persona.
+     * Propaga FechaNacimientoFuturaException (manejo global: 400 Bad Request).
+     */
     @PostMapping
     public ResponseEntity<PersonaJpa> crearPersona(@RequestBody PersonaJpa persona) {
+        // La excepción se lanza directamente desde el servicio si es necesario.
         PersonaJpa nuevaPersona = personaService.guardarPersona(persona);
         return new ResponseEntity<>(nuevaPersona, HttpStatus.CREATED);
     }
@@ -32,36 +37,41 @@ public class PersonaController {
         return ResponseEntity.ok(personas);
     }
 
+    /**
+     * Obtiene una persona por ID.
+     * Propaga EmpleadoNoEncontradoException (manejo global: 404 Not Found).
+     */
     @GetMapping("/{id}")
     public ResponseEntity<PersonaJpa> obtenerPersonaPorId(@PathVariable Long id) {
-        return personaService.obtenerPersonaPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        // Si la persona no existe, el servicio lanza la excepción 404.
+        PersonaJpa persona = personaService.obtenerPersonaPorId(id);
+        return ResponseEntity.ok(persona);
     }
 
+    /**
+     * Actualiza una persona por ID.
+     * Propaga EmpleadoNoEncontradoException (404) y FechaNacimientoFuturaException (400).
+     */
     @PutMapping("/{id}")
     public ResponseEntity<PersonaJpa> actualizarPersona(
             @PathVariable Long id,
             @RequestBody PersonaJpa persona) {
-        return personaService.actualizarPersona(id, persona)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarPersona(@PathVariable Long id) {
-        if (personaService.eliminarPersona(id)) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+        // Si no existe o la fecha es inválida, se lanza la excepción.
+        PersonaJpa personaActualizada = personaService.actualizarPersona(id, persona);
+        return ResponseEntity.ok(personaActualizada);
     }
 
     /**
-     * Busca personas por nombre de forma case-insensitive.
-     * Endpoint: GET /api/personas/buscar?nombre=fragmento
-     * @param nombreFragmento Fragmento de nombre a buscar.
-     * @return Lista de personas que coinciden.
+     * Elimina una persona por ID.
+     * Propaga EmpleadoNoEncontradoException (manejo global: 404 Not Found).
      */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarPersona(@PathVariable Long id) {
+        // Si no existe, el servicio lanza la excepción 404.
+        personaService.eliminarPersona(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/buscar")
     public ResponseEntity<List<PersonaJpa>> buscarPorNombre(
             @RequestParam(name = "nombre") String nombreFragmento) {

@@ -3,13 +3,16 @@ package py.edu.uc.jpasseratplp32025.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import py.edu.uc.jpasseratplp32025.model.Avatar;
+import py.edu.uc.jpasseratplp32025.model.PosicionGPS;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 
 @Entity
 @DiscriminatorValue("EMPLEADO")
-public class EmpleadoTiempoCompleto extends PersonaJpa {
+public class EmpleadoTiempoCompleto extends Empleado {
 
     // Constantes para el cálculo
     private static final BigDecimal DESCUENTO_CALCULO_SALARIO = new BigDecimal("0.09"); // 9% para calcular salario
@@ -25,13 +28,20 @@ public class EmpleadoTiempoCompleto extends PersonaJpa {
     @Column(nullable = true, length = 50)
     private String departamento;
 
+    //
+    // Constructores
+    //
     public EmpleadoTiempoCompleto() {
         super();
     }
 
-    public EmpleadoTiempoCompleto(String nombre, String apellido, LocalDate fechaDeNacimiento, String numeroDeCedula,
-                                  BigDecimal salarioMensual, String departamento) {
-        super(nombre, apellido, fechaDeNacimiento, numeroDeCedula);
+    public EmpleadoTiempoCompleto(String nombre, String apellido, LocalDate fechaDeNacimiento, 
+            String numeroDeCedula, BigDecimal salarioMensual, String departamento, 
+            LocalDate fechaFinContrato) {
+        super(nombre, apellido, fechaDeNacimiento, numeroDeCedula, 
+              LocalDate.now(), // fechaIngreso
+              15, // diasVacacionesIniciales por defecto
+              fechaFinContrato);
         this.salarioMensual = salarioMensual;
         this.departamento = departamento;
     }
@@ -118,6 +128,32 @@ public class EmpleadoTiempoCompleto extends PersonaJpa {
 
         return String.format("%s, Departamento: %s, Salario Mensual Bruto: %s, Salario Neto (9%%): %s, Deducciones (5%%): %s, Impuestos: %s",
                 datos, departamentoStr, salarioBrutoStr, salarioNetoStr, deduccionesStr, impuestosStr);
+    }
+
+    @Override
+    public PosicionGPS ubicarElemento() {
+        // MOCK: Retorna una posición GPS fija (ej. la oficina central)
+        final double LAT = -33.298818; // Ejemplo de Asunción
+        final double LON = -40.568461;
+        return new PosicionGPS(LAT, LON);
+    }
+
+    @Override
+    public Avatar obtenerImagen() {
+        // MOCK: Retorna un Avatar con datos ficticios
+        Object imagenMock = new Object(); // Objeto simple mock
+
+        // 1. Obtener el nombre
+        String nombreActual = this.getNombre();
+
+        // 2. CORRECCIÓN: Verificar si el nombre es null o vacío
+        String nombreParaNick = (nombreActual != null && !nombreActual.trim().isEmpty())
+                ? nombreActual.toUpperCase()
+                : "SIN_NOMBRE"; // Valor por defecto si es null
+
+        String nickMock = "MOCK-" + nombreParaNick;
+
+        return new Avatar(imagenMock, nickMock);
     }
 
     public BigDecimal getSalarioMensual() { return salarioMensual; }
