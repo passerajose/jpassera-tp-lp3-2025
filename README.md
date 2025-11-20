@@ -97,12 +97,12 @@ Nota: usar header `Content-Type: application/json`. Fechas en formato ISO `yyyy-
 
 ### 1. Gestión de Gerentes
 
-|**Endpoint**|**Descripción**|
-|---|---|
-|`POST /api/gerentes`|Crea un nuevo Gerente.|
-|`PUT /api/gerentes/{id}`|Actualiza datos de un Gerente.|
-|`POST /api/gerentes/{id}/permiso`|Solicita permiso para un Gerente (no aplica límite de días).|
-|`GET /api/gerentes/{id}/nomina-departamento`|Calcula la nómina total del departamento a cargo del Gerente.|
+| **Endpoint**                                 |**Descripción**|
+|----------------------------------------------|---|
+| `POST /api/gerentes`                         |Crea un nuevo Gerente.|
+| `PUT /api/gerentes/{id}`                     |Actualiza datos de un Gerente.|
+| `POST /api/gerentes/{id}/permisos`           |Solicita permiso para un Gerente (no aplica límite de días).|
+| `GET /api/gerentes/{id}/nomina-departamento` |Calcula la nómina total del departamento a cargo del Gerente.|
 
 **Ejemplo de Creación de Gerente:**
 
@@ -123,16 +123,16 @@ curl --request POST \
 
 ### 2. Gestión de Contratistas
 
-|**Endpoint**|**Descripción**|
-|---|---|
-|`POST /api/contratistas`|Crea un nuevo Contratista (aplica validación de `fechaDeNacimiento`).|
-|`GET /api/contratistas`|Lista todos los Contratistas.|
-|`GET /api/contratistas/{id}`|Obtiene un Contratista por ID (lanza `EmpleadoNoEncontradoException` si no existe).|
-|`PUT /api/contratistas/{id}`|Actualiza un Contratista (aplica validación de `fechaDeNacimiento`).|
-|`DELETE /api/contratistas/{id}`|Elimina un Contratista.|
-|`POST /api/contratistas/{id}/permiso`|Solicita permiso para el Contratista. **Aplica límite de 20 días/año.**|
-|`GET /api/contratistas/vigentes`|Lista los Contratistas con contratos activos.|
-|`GET /api/contratistas/nomina-total`|Calcula la nómina total para todos los Contratistas.|
+| **Endpoint**                           |**Descripción**|
+|----------------------------------------|---|
+| `POST /api/contratistas`               |Crea un nuevo Contratista (aplica validación de `fechaDeNacimiento`).|
+| `GET /api/contratistas`                |Lista todos los Contratistas.|
+| `GET /api/contratistas/{id}`           |Obtiene un Contratista por ID (lanza `EmpleadoNoEncontradoException` si no existe).|
+| `PUT /api/contratistas/{id}`           |Actualiza un Contratista (aplica validación de `fechaDeNacimiento`).|
+| `DELETE /api/contratistas/{id}`        |Elimina un Contratista.|
+| `POST /api/contratistas/{id}/permisos` |Solicita permiso para el Contratista. **Aplica límite de 20 días/año.**|
+| `GET /api/contratistas/vigentes`       |Lista los Contratistas con contratos activos.|
+| `GET /api/contratistas/nomina-total`   |Calcula la nómina total para todos los Contratistas.|
 
 **Ejemplo de Creación de un empleado de tipo Contratista**
 
@@ -155,20 +155,20 @@ curl --request POST \
 
 ### 3. Gestión de Empleados de Tiempo Completo
 
-|**Endpoint**|**Descripción**|
-|---|---|
-|`POST /api/empleados`|Crea un nuevo Empleado de Tiempo Completo (aplica validación de `fechaDeNacimiento`).|
-|`POST /api/empleados/batch`|Carga masiva de Empleados de Tiempo Completo.|
-|`GET /api/empleados`|Lista todos los Empleados.|
-|`GET /api/empleados/{id}`|Obtiene un Empleado por ID.|
-|`PUT /api/empleados/{id}`|Actualiza un Empleado (aplica validación de `fechaDeNacimiento`).|
-|`DELETE /api/empleados/{id}`|Elimina un Empleado.|
-|`POST /api/empleados/{id}/permiso`|Solicita permiso para el Empleado. **Aplica límite de 20 días/año.**|
-|`GET /api/empleados/{id}/salario-neto`|Calcula el salario neto después de deducciones.|
-|`GET /api/empleados/{id}/impuestos`|Devuelve información detallada del impuesto en un DTO.|
-|`GET /api/empleados/departamento?nombre=X`|Busca empleados por departamento.|
-|`GET /api/empleados/vigentes`|Lista empleados con contratos vigentes.|
-|`GET /api/empleados/nomina-total`|Calcula la nómina total para Empleados de Tiempo Completo.|
+| **Endpoint**                               |**Descripción**|
+|--------------------------------------------|---|
+| `POST /api/empleados`                      |Crea un nuevo Empleado de Tiempo Completo (aplica validación de `fechaDeNacimiento`).|
+| `POST /api/empleados/batch`                |Carga masiva de Empleados de Tiempo Completo.|
+| `GET /api/empleados`                       |Lista todos los Empleados.|
+| `GET /api/empleados/{id}`                  |Obtiene un Empleado por ID.|
+| `PUT /api/empleados/{id}`                  |Actualiza un Empleado (aplica validación de `fechaDeNacimiento`).|
+| `DELETE /api/empleados/{id}`               |Elimina un Empleado.|
+| `POST /api/empleados/{id}/permisos`        |Solicita permiso para el Empleado. **Aplica límite de 20 días/año.**|
+| `GET /api/empleados/{id}/salario-neto`     |Calcula el salario neto después de deducciones.|
+| `GET /api/empleados/{id}/impuestos`        |Devuelve información detallada del impuesto en un DTO.|
+| `GET /api/empleados/departamento?nombre=X` |Busca empleados por departamento.|
+| `GET /api/empleados/vigentes`              |Lista empleados con contratos vigentes.|
+| `GET /api/empleados/nomina-total`          |Calcula la nómina total para Empleados de Tiempo Completo.|
 
 **Ejemplo de Creación de un empleado de tipo EmpleadoTiempoCompleto**
 
@@ -189,17 +189,17 @@ curl --request POST \
 
 ### 4. Gestión de Empleados Por Hora
 
-|**Endpoint**|**Descripción**|
-|---|---|
-|`POST /api/empleados-por-hora`|Crea un nuevo Empleado por Hora (aplica validación de `fechaDeNacimiento`).|
-|`GET /api/empleados-por-hora`|Lista todos los Empleados por Hora.|
-|`GET /api/empleados-por-hora/{id}`|Obtiene un Empleado por ID.|
-|`PUT /api/empleados-por-hora/{id}`|Actualiza un Empleado (aplica validación de `fechaDeNacimiento`).|
-|`DELETE /api/empleados-por-hora/{id}`|Elimina un Empleado.|
-|`POST /api/empleados-por-hora/{id}/permiso`|Solicita permiso para el Empleado. **Aplica límite de 20 días/año.**|
-|`GET /api/empleados-por-hora/consulta?horas=X`|Lista empleados que hayan trabajado más de un número de horas específico.|
-|`GET /api/empleados-por-hora/vigentes`|Lista empleados con contratos vigentes.|
-|`GET /api/empleados-por-hora/nomina-total`|Calcula la nómina total para Empleados por Hora.|
+| **Endpoint**                                   |**Descripción**|
+|------------------------------------------------|---|
+| `POST /api/empleados-por-hora`                 |Crea un nuevo Empleado por Hora (aplica validación de `fechaDeNacimiento`).|
+| `GET /api/empleados-por-hora`                  |Lista todos los Empleados por Hora.|
+| `GET /api/empleados-por-hora/{id}`             |Obtiene un Empleado por ID.|
+| `PUT /api/empleados-por-hora/{id}`             |Actualiza un Empleado (aplica validación de `fechaDeNacimiento`).|
+| `DELETE /api/empleados-por-hora/{id}`          |Elimina un Empleado.|
+| `POST /api/empleados-por-hora/{id}/permisos`   |Solicita permiso para el Empleado. **Aplica límite de 20 días/año.**|
+| `GET /api/empleados-por-hora/consulta?horas=X` |Lista empleados que hayan trabajado más de un número de horas específico.|
+| `GET /api/empleados-por-hora/vigentes`         |Lista empleados con contratos vigentes.|
+| `GET /api/empleados-por-hora/nomina-total`     |Calcula la nómina total para Empleados por Hora.|
 
 **Ejemplo de Consulta por Horas Trabajadas**
 
@@ -210,11 +210,11 @@ curl -X GET "http://localhost:8080/api/empleados-por-hora/consulta?horas=40"
 
 ### 5. Solicitud de Permisos (Validación de Días)
 
-|**Endpoint**|**Descripción**|
-|---|---|
-|`POST /api/empleados/{id}/permiso`|Solicita permiso para Empleados de Tiempo Completo.|
-|`POST /api/contratistas/{id}/permiso`|Solicita permiso para Contratistas.|
-|`POST /api/empleados-por-hora/{id}/permiso`|Solicita permiso para Empleados por Hora.|
+| **Endpoint**                                 |**Descripción**|
+|----------------------------------------------|---|
+| `POST /api/empleados/{id}/permisos`          |Solicita permiso para Empleados de Tiempo Completo.|
+| `POST /api/contratistas/{id}/permisos`       |Solicita permiso para Contratistas.|
+| `POST /api/empleados-por-hora/{id}/permisos` |Solicita permiso para Empleados por Hora.|
 
 **Ejemplo de Solicitud de Permiso (puede lanzar DiasInsuficientesException):**
 

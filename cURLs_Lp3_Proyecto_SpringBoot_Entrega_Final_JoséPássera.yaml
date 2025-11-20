@@ -1,0 +1,1536 @@
+type: collection.insomnia.rest/5.0
+name: LP3 Entrega Final Proyecto SpringBoot
+meta:
+  id: wrk_1f294e06e3534ae18aeee815c7ed7bdd
+  created: 1763359664250
+  modified: 1763359664250
+  description: ""
+collection:
+  - name: PersonaController
+    meta:
+      id: fld_89e4a8c75e96495eb4eb988d69891186
+      created: 1763359686976
+      modified: 1763359686976
+      sortKey: -1763359686976
+      description: ""
+    children:
+      - url: http://localhost:8080/api/personas
+        name: Recuperar todas las personas
+        meta:
+          id: req_10447ee8378446588af5bc470b4670c4
+          created: 1763400232558
+          modified: 1763400241390
+          isPrivate: false
+          description: ""
+          sortKey: -1763400232558
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/personas/9
+        name: Recuperar la persona por ID
+        meta:
+          id: req_5f639355781e4f07a14f383e7f48788b
+          created: 1763400269594
+          modified: 1763400307867
+          isPrivate: false
+          description: ""
+          sortKey: -1763400269594
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/personas/buscar
+        name: Búsqueda de persona por fragmento
+        meta:
+          id: req_21b3c5cd9a2f45df88938fe2d8d9d44e
+          created: 1763400334282
+          modified: 1763400375303
+          isPrivate: false
+          description: ""
+          sortKey: -1763400334282
+        method: GET
+        parameters:
+          - name: nombre
+            value: Marta
+            disabled: false
+            id: pair_808631fdfeba431ca79d067a2e2ba351
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/personas/buscar
+        name: Búsqueda parcial de persona
+        meta:
+          id: req_70f416c5a4cb44caba24b4b17af9ff1e
+          created: 1763400394559
+          modified: 1763402137507
+          isPrivate: false
+          description: ""
+          sortKey: -1763400394559
+        method: GET
+        parameters:
+          - name: nombre
+            value: ma
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/personas/1
+        name: Eliminar persona por ID
+        meta:
+          id: req_466db43c742445c29614834157124b70
+          created: 1763400626378
+          modified: 1763400638636
+          isPrivate: false
+          description: ""
+          sortKey: -1763400626378
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Control de Errores
+    meta:
+      id: fld_465c1e11462f4030a6a7214292af87ae
+      created: 1763359701121
+      modified: 1763412735205
+      sortKey: -1763359701121
+      description: ""
+    children:
+      - url: http://localhost:8080/api/personas/999
+        name: EmpleadoNoEncontradoException
+        meta:
+          id: req_2b21317ccb1946cd85cc76f80fe11c09
+          created: 1763411224979
+          modified: 1763411237258
+          isPrivate: false
+          description: ""
+          sortKey: -1763411224979
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/gerentes/11/permisos
+        name: DiasInsuficientesException
+        meta:
+          id: req_81ef197a6e764fd98a65fbb929d905b0
+          created: 1763411301809
+          modified: 1763411372934
+          isPrivate: false
+          description: >-
+            Esta es una Checked Exception que se maneja a nivel de
+            service/controller (o en la entidad) y es capturada globalmente,
+            resultando en un HTTP 400.
+
+
+            Para forzarla, asumimos que un Gerente (ID 11) tiene un saldo de 30
+            días y tratamos de solicitar 100 días, o que el método
+            solicitarPermiso de la entidad la lanza en caso de saldo agotado.
+          sortKey: -1763411301809
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"fechaInicio": "2026-07-01",
+            	"fechaFin": "2026-10-09",
+            	"tipoPermiso": "VACACIONES"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/gerentes/11/permisos
+        name: PermisoNoConcedidoException
+        meta:
+          id: req_97b089a278744863abed64395c83449f
+          created: 1763411583772
+          modified: 1763411591835
+          isPrivate: false
+          description: ""
+          sortKey: -1763411583772
+        method: POST
+        body:
+          text: '{     "fechaInicio": "2026-01-01",     "fechaFin":
+            "2026-01-01",     "tipoPermiso": "PERMISO"  }'
+          mimeType: application/json
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/contratistas/17
+        name: FechaNacimientoFuturaException
+        meta:
+          id: req_0b7551ec34b14d1d80c9ab1f6e6f42fb
+          created: 1763411800934
+          modified: 1763414025482
+          isPrivate: false
+          description: ""
+          sortKey: -1763411800934
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"id": 17,
+            	"nombre": "Carlitos",
+            	"apellido": "Gomez",
+            	"numeroDeCedula": "9999999",
+            	"fechaDeNacimiento": "2030-05-20",
+            	"fechaIngreso": "2024-01-01",
+            	"diasVacacionesAcumulados": 10,
+            	"montoPorProyecto": 2000000,
+            	"proyectosCompletados": 5,
+            	"fechaFinContrato": "2026-06-30"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/contratistas/11
+        name: HttpMessageNotReadableException
+        meta:
+          id: req_28dc6d7b1c164992aa24026bbce74609
+          created: 1763414313153
+          modified: 1763417325355
+          isPrivate: false
+          description: ""
+          sortKey: -1763414313153
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nombre": "Jose",
+            	"apellido": "Menchi"
+            	#Faltaelcierreaquí
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Tipos de Empleado
+    meta:
+      id: fld_fee59642fb2b4995948d2e1af6e64a08
+      created: 1763359737372
+      modified: 1763494315408
+      sortKey: -1763359737372
+      description: ""
+    children:
+      - name: ContratistaController
+        meta:
+          id: fld_6f0e97314bcf4ac283c9bab88f9d6085
+          created: 1763359754638
+          modified: 1763359754638
+          sortKey: -1763359754638
+          description: ""
+        children:
+          - url: http://localhost:8080/api/contratistas
+            name: Recupera todos los Contratistas
+            meta:
+              id: req_2ac0509d6279460ab3e1ace8f7720365
+              created: 1763394096088
+              modified: 1763394110463
+              isPrivate: false
+              description: ""
+              sortKey: -1763394096088
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/contratistas/4
+            name: Recupera el contratista por ID
+            meta:
+              id: req_306657b33fb842dfa288b6ed4b8040ce
+              created: 1763394135708
+              modified: 1763396866087
+              isPrivate: false
+              description: ""
+              sortKey: -1763394135708
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/contratistas/1
+            name: Actualiza el contratista por ID
+            meta:
+              id: req_7a325eb957d646ffb8b45481a5b57153
+              created: 1763394174323
+              modified: 1763396859422
+              isPrivate: false
+              description: ""
+              sortKey: -1763394174323
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"id": 1,
+                	"nombre": "Alicia UPDATED",
+                	"apellido": "Smith",
+                	"numeroDeCedula": "1234567",
+                	"fechaDeNacimiento": "1995-01-15",
+                	"montoPorProyecto": 1000000,
+                	"proyectosCompletados": 5,
+                	"fechaFinContrato": "2026-12-31"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/contratistas/16
+            name: Elimina el contratista por ID
+            meta:
+              id: req_57f376a153b140a19a94aa99089860c4
+              created: 1763394244251
+              modified: 1763413043724
+              isPrivate: false
+              description: ""
+              sortKey: -1763394244251
+            method: DELETE
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/contratistas/vigentes
+            name: Contratos cuya fechaFinContrato es futura
+            meta:
+              id: req_8f818e4e019246ffba5bef5d48424422
+              created: 1763394307752
+              modified: 1763394321416
+              isPrivate: false
+              description: ""
+              sortKey: -1763394307752
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/contratistas/nomina-total
+            name: Suma de los salarios (montoPorProyecto * proyectosCompletados) de todos
+              los contratistas
+            meta:
+              id: req_b4eeb749893e42f4bf94ccbbf09f46af
+              created: 1763394367677
+              modified: 1763394381675
+              isPrivate: false
+              description: ""
+              sortKey: -1763394367677
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/contratistas
+            name: Crear un nuevo Contratista
+            meta:
+              id: req_a2c1e89da1bb43069e8446f09f19cb43
+              created: 1763395476975
+              modified: 1763677391447
+              isPrivate: false
+              description: ""
+              sortKey: -1763394095988
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"nombre": "Piki",
+                	"apellido": "Gomez",
+                	"numeroDeCedula": "9999919",
+                	"fechaDeNacimiento": "2000-05-20",
+                	"fechaIngreso": "2024-01-01",
+                	"diasVacacionesAcumulados": 10,
+                	"montoPorProyecto": 2000000,
+                	"proyectosCompletados": 5,
+                	"fechaFinContrato": "2026-06-30"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: EmpeladoPorHorasController
+        meta:
+          id: fld_8cde902904254970a85e3e3c1862f1ad
+          created: 1763359765708
+          modified: 1763359765708
+          sortKey: -1763359765708
+          description: ""
+        children:
+          - url: http://localhost:8080/api/empleados-por-hora
+            name: Crear un nuevo EmpleadoPorHoras
+            meta:
+              id: req_aea4f0064fd94fefbf3f1fb8d2ab2b62
+              created: 1763396448684
+              modified: 1763678350035
+              isPrivate: false
+              description: ""
+              sortKey: -1763396448684
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"nombre": "Marquito",
+                	"apellido": "Duarte",
+                	"numeroDeCedula": "1008",
+                	"fechaDeNacimiento": "2000-03-25",
+                	"fechaIngreso": "2023-11-15",
+                	"diasVacacionesAcumulados": 12,
+                	"tarifaPorHora": 20000,
+                	"horasTrabajadas": 50,
+                	"fechaFinContrato": "2027-01-01"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados-por-hora/nomina-total
+            name: Nomina total
+            meta:
+              id: req_872e88820c194e9f9703d02e7c0a453d
+              created: 1763396518840
+              modified: 1763396543243
+              isPrivate: false
+              description: ""
+              sortKey: -1763396518840
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados-por-hora
+            name: Recupera todos los empleados por hora
+            meta:
+              id: req_758c56de63594c15ae6b6f70ef9aba94
+              created: 1763396729692
+              modified: 1763396740196
+              isPrivate: false
+              description: ""
+              sortKey: -1763396729692
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados-por-hora/1
+            name: Recupera el empleado por hora por ID
+            meta:
+              id: req_5e5815f23beb4f1bad4dd94d752eb192
+              created: 1763396820874
+              modified: 1763396834838
+              isPrivate: false
+              description: ""
+              sortKey: -1763396820874
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados-por-hora/vigentes
+            name: Recupera empleados con contratos vigentes (basado en fechaFinContrato).
+            meta:
+              id: req_b29f85f6e19f40e69c062731fb1b676e
+              created: 1763396895639
+              modified: 1763396904500
+              isPrivate: false
+              description: ""
+              sortKey: -1763396895639
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados-por-hora/1
+            name: Actualiza el empleado por ID
+            meta:
+              id: req_eb07dc92309446549483d06768986cac
+              created: 1763396934858
+              modified: 1763396959265
+              isPrivate: false
+              description: ""
+              sortKey: -1763396934858
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"id": 1,
+                	"nombre": "Ana Updated",
+                	"apellido": "Perez",
+                	"numeroDeCedula": "1001",
+                	"fechaDeNacimiento": "1990-10-01",
+                	"tarifaPorHora": 10000,
+                	"horasTrabajadas": 45,
+                	"fechaFinContrato": "2026-12-31"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados-por-hora/3
+            name: Elimina el empleado por hora por ID
+            meta:
+              id: req_4fb1cb893ab044b3b4c5ccc5574f217f
+              created: 1763397001813
+              modified: 1763397048846
+              isPrivate: false
+              description: ""
+              sortKey: -1763397001813
+            method: DELETE
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - name: Prueba de Permiso Exitoso
+            meta:
+              id: fld_42a0a484d0fa409d89d550328e66483f
+              created: 1763397183533
+              modified: 1763397183533
+              sortKey: -1763397183533
+              description: ""
+            children:
+              - url: http://localhost:8080/api/empleados-por-hora/1/permisos
+                name: Vacaciones Válidas (10 días)
+                meta:
+                  id: req_c4103b9f85e34d1ba8843c871de4a886
+                  created: 1763397110414
+                  modified: 1763397246244
+                  isPrivate: false
+                  description: La solicitud pasa si el saldo disponible es >= a 10 y el total
+                    solicitado en el año es <= 20.
+                  sortKey: -1763397187298
+                method: POST
+                body:
+                  mimeType: application/json
+                  text: |-
+                    {
+                    	"fechaInicio": "2026-03-01",
+                    	"fechaFin": "2026-03-10",
+                    	"tipoPermiso": "VACACIONES"
+                    }
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: http://localhost:8080/api/empleados-por-hora/1/permisos
+                name: Permiso Especial (4 días)
+                meta:
+                  id: req_a45d8909f9a24044926cb2da999ce88f
+                  created: 1763397209460
+                  modified: 1763397261185
+                  isPrivate: false
+                  description: Aprobación automática.
+                  sortKey: -1763397209460
+                method: POST
+                body:
+                  mimeType: application/json
+                  text: |-
+                    {
+                    	"fechaInicio": "2026-05-05",
+                    	"fechaFin": "2026-05-08",
+                    	"tipoPermiso": "MATRIMONIO"
+                    }
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+          - name: Pruebas de Permiso con Errores (400 Bad Request / 404 Not Found)
+            meta:
+              id: fld_1bb67cc40ac549c6b68a2647ef615052
+              created: 1763397307572
+              modified: 1763397307572
+              sortKey: -1763397307572
+              description: ""
+            children:
+              - url: http://localhost:8080/api/empleados-por-hora/1/permisos
+                name: DiasInsuficientesException
+                meta:
+                  id: req_bf7c6eaefe33476aacf67e974c50061c
+                  created: 1763397350038
+                  modified: 1763397530771
+                  isPrivate: false
+                  description: 400 Bad Request si excede el límite acumulado de 20 días anuales.
+                  sortKey: -1763397350038
+                method: POST
+                body:
+                  mimeType: application/json
+                  text: |-
+                    {
+                    	"fechaInicio": "2026-06-01",
+                    	"fechaFin": "2026-06-25",
+                    	"tipoPermiso": "VACACIONES"
+                    }
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: http://localhost:8080/api/empleados-por-hora/1/permisos
+                name: PermisoNoConcedidoException
+                meta:
+                  id: req_3b2c133e69c5472eba0a6d9dae362279
+                  created: 1763397402281
+                  modified: 1763397501298
+                  isPrivate: false
+                  description: 400 Bad Request si el tipo no es VACACIONES o MATRIMONIO.
+                  sortKey: -1763397402281
+                method: POST
+                body:
+                  mimeType: application/json
+                  text: |-
+                    {
+                    	"fechaInicio": "2026-03-01",
+                    	"fechaFin": "2026-03-02",
+                    	"tipoPermiso": "ENFERMEDAD"
+                    }
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: http://localhost:8080/api/empleados-por-hora/999/permisos
+                name: EmpleadoNoEncontradoException
+                meta:
+                  id: req_35fcad53790c4cd29368bdcfb2306ec0
+                  created: 1763397461321
+                  modified: 1763397485082
+                  isPrivate: false
+                  description: 404 Not Found al usar un ID inexistente.
+                  sortKey: -1763397461321
+                method: POST
+                body:
+                  mimeType: application/json
+                  text: |-
+                    {
+                    	"fechaInicio": "2026-03-01",
+                    	"fechaFin": "2026-03-10",
+                    	"tipoPermiso": "VACACIONES"
+                    }
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+      - name: EmpleadoTiempoCompleto
+        meta:
+          id: fld_8f2b8d9607b94f6c85d38a58f2df3a77
+          created: 1763359776366
+          modified: 1763359776366
+          sortKey: -1763359776366
+          description: ""
+        children:
+          - url: http://localhost:8080/api/empleados
+            name: Crear un nuevo EmpleatoTiempoCompleto
+            meta:
+              id: req_7d0cf64f9b9649e18836032b0bae51ec
+              created: 1763397988254
+              modified: 1763677441524
+              isPrivate: false
+              description: ""
+              sortKey: -1763397988254
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"nombre": "Carla",
+                	"apellido": "Mendez",
+                	"numeroDeCedula": "555",
+                	"fechaDeNacimiento": "2000-11-17",
+                	"salarioMensual": 6000000,
+                	"departamento": "IT",
+                	"fechaFinContrato": "2029-01-01"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados/nomina-total
+            name: Nomina total
+            meta:
+              id: req_e4a6c4b0fbaf467fad3f409266867f67
+              created: 1763398177431
+              modified: 1763398182126
+              isPrivate: false
+              description: ""
+              sortKey: -1763398177431
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados/5/salario-neto
+            name: Salario Neto por ID
+            meta:
+              id: req_7ca1d3c157ff493eaf4afe31bc41a59c
+              created: 1763398207049
+              modified: 1763398227632
+              isPrivate: false
+              description: ""
+              sortKey: -1763398207049
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados/departamento
+            name: Buscar por Departamento
+            meta:
+              id: req_83a7d186143c4931a95d319c641177ed
+              created: 1763398249306
+              modified: 1763398862421
+              isPrivate: false
+              description: ""
+              sortKey: -1763398249306
+            method: GET
+            parameters:
+              - name: nombre
+                value: Batching
+                disabled: false
+                id: pair_14817a2a31d24a8cb89644baaf73202d
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados/vigentes
+            name: Contratos Vigentes
+            meta:
+              id: req_33576d6609de4338b925615ec309bf80
+              created: 1763398324775
+              modified: 1763398336575
+              isPrivate: false
+              description: ""
+              sortKey: -1763398324775
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados
+            name: Listar todos
+            meta:
+              id: req_7ffb529fb66d40119d8a5eb253f98c24
+              created: 1763398374504
+              modified: 1763398696272
+              isPrivate: false
+              description: ""
+              sortKey: -1763398374504
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados/4
+            name: Actualizar Empleado or ID
+            meta:
+              id: req_06c81f991b814704b1c2503db415938b
+              created: 1763398607677
+              modified: 1763398692148
+              isPrivate: false
+              description: ""
+              sortKey: -1763398607677
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"id": 4,
+                	"nombre": "Carlos",
+                	"apellido": "Rojas",
+                	"numeroDeCedula": "111",
+                	"fechaDeNacimiento": "1993-01-01",
+                	"salarioMensual": 2899048,
+                	"departamento": "Marketing",
+                	"fechaFinContrato": "2028-01-01"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados/5/permisos
+            name: Solicitud de Permiso (Vacaciones válidas, 10 días)
+            meta:
+              id: req_b2566b93bd684c79967765a482dfe233
+              created: 1763398723526
+              modified: 1763678051885
+              isPrivate: false
+              description: ""
+              sortKey: -1763398723526
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"fechaInicio": "2026-04-01",
+                	"fechaFin": "2026-04-10",
+                	"tipoPermiso": "VACACIONES"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados/5
+            name: Eliminar Empleado por ID
+            meta:
+              id: req_c7cd9db874144925b323f6ebdc0fa096
+              created: 1763398773882
+              modified: 1763398785040
+              isPrivate: false
+              description: ""
+              sortKey: -1763398773882
+            method: DELETE
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/empleados/batch
+            name: Prueba de Carga en Lote (Batch)
+            meta:
+              id: req_5386248f9a2640898db986c75ea90b4f
+              created: 1763398822060
+              modified: 1763398833106
+              isPrivate: false
+              description: ""
+              sortKey: -1763398822060
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                [
+                	{
+                		"nombre": "Batch",
+                		"apellido": "Alpha",
+                		"numeroDeCedula": "333",
+                		"fechaDeNacimiento": "2000-01-01",
+                		"salarioMensual": 3000000,
+                		"departamento": "Batching",
+                		"fechaFinContrato": "2030-01-01"
+                	},
+                	{
+                		"nombre": "Batch",
+                		"apellido": "Beta",
+                		"numeroDeCedula": "444",
+                		"fechaDeNacimiento": "2001-01-01",
+                		"salarioMensual": 4000000,
+                		"departamento": "Batching",
+                		"fechaFinContrato": "2030-01-01"
+                	}
+                ]
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: GerenteController
+        meta:
+          id: fld_e491c189d2104399b195c22c46d41489
+          created: 1763359784386
+          modified: 1763359784386
+          sortKey: -1763359784386
+          description: ""
+        children:
+          - url: http://localhost:8080/api/gerentes
+            name: Crear un nuevo Gerente
+            meta:
+              id: req_8c9b471bb3604b68a6eba2e77d2a75a2
+              created: 1763399382692
+              modified: 1763677132138
+              isPrivate: false
+              description: ""
+              sortKey: -1763399382692
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"nombre": "Filippi", 
+                	"apellido": "Menchi", 
+                	"numeroDeCedula": "6666666",
+                	"fechaDeNacimiento": "2000-05-15",
+                	"fechaIngreso": "2030-06-01", 
+                	"departamentoACargo": "Finanzas",
+                	"fechaFinContrato": "2031-12-31"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/gerentes/11/permisos
+            name: Solicitud de Vacaciones que excede el límite estándar de 20 días
+            meta:
+              id: req_6093059d2fcd47bc871b179f0518f43f
+              created: 1763399493989
+              modified: 1763404426914
+              isPrivate: false
+              description: ""
+              sortKey: -1763399493989
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"fechaInicio": "2026-07-01",
+                	"fechaFin": "2026-07-05",
+                	"tipoPermiso": "VACACIONES"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/gerentes/9/nomina-departamento
+            name: Nómina de Departamento
+            meta:
+              id: req_2cdd27825a2441c6bb5fb34f5bb938e6
+              created: 1763399575376
+              modified: 1763399592273
+              isPrivate: false
+              description: ""
+              sortKey: -1763399575376
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/gerentes
+            name: Listar todos los gerentes
+            meta:
+              id: req_17ba7e9a4dcb44939ff6aedde86051e6
+              created: 1763399888393
+              modified: 1763399900608
+              isPrivate: false
+              description: ""
+              sortKey: -1763399438340.5
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/gerentes/9
+            name: Obtener Gerente por ID
+            meta:
+              id: req_b28746dd2d1a4109b3cccf6d5cde323d
+              created: 1763399933508
+              modified: 1763399946368
+              isPrivate: false
+              description: ""
+              sortKey: -1763399466164.75
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/gerentes/9
+            name: Actualizar Gerente por ID
+            meta:
+              id: req_92a70bacaae84d5090e4cd171aedd735
+              created: 1763399959926
+              modified: 1763400002988
+              isPrivate: false
+              description: ""
+              sortKey: -1763399480076.875
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"id": 9,
+                	"nombre": "Marta",
+                	"apellido": "Benitez Updated",
+                	"numeroDeCedula": "2222222",
+                	"fechaDeNacimiento": "1980-05-15",
+                	"fechaIngreso": "2021-06-01",
+                	"departamentoACargo": "Marketing",
+                	"fechaFinContrato": "2030-12-31"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/gerentes/11
+            name: Eliminar Gerente por ID
+            meta:
+              id: req_be1a98b4c2a24d90b9e7014b17dc23ad
+              created: 1763400022785
+              modified: 1763412603586
+              isPrivate: false
+              description: ""
+              sortKey: -1763400022785
+            method: DELETE
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - name: Pruebas de Funcionalidad Gerencial
+            meta:
+              id: fld_3df66907a5b242a786445afabb73d267
+              created: 1763399651520
+              modified: 1763399651520
+              sortKey: -1763399651520
+              description: ""
+            children:
+              - url: http://localhost:8080/api/gerentes/9/aprobar-permiso/99
+                name: Aprobación Exitosa
+                meta:
+                  id: req_dfa970aae63d47a58d9f6239cddbb16f
+                  created: 1763399665330
+                  modified: 1763399697436
+                  isPrivate: false
+                  description: ""
+                  sortKey: -1763399665330
+                method: POST
+                parameters:
+                  - name: aprobado
+                    value: "true"
+                    disabled: false
+                  - name: notas
+                    value: Todo en orden
+                    disabled: false
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: http://localhost:8080/api/gerentes/10/aprobar-permiso/100
+                name: Rechazo con Notas
+                meta:
+                  id: req_98bc6a34e420402aa20f12c523f0a77d
+                  created: 1763399718976
+                  modified: 1763399726019
+                  isPrivate: false
+                  description: ""
+                  sortKey: -1763399718976
+                method: POST
+                parameters:
+                  - name: aprobado
+                    value: "false"
+                    disabled: false
+                  - name: notas
+                    value: Recursos insuficientes
+                    disabled: false
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+  - name: NominaController
+    meta:
+      id: fld_3495625094474a56a00e65e2d9855ac0
+      created: 1763359799569
+      modified: 1763359799569
+      sortKey: -1763359799569
+      description: ""
+    children:
+      - url: http://localhost:8080/api/nomina/reporte
+        name: Generar Reporte Polimórfico
+        meta:
+          id: req_3b02198c06d945898ce9b72909ee0be9
+          created: 1763403691792
+          modified: 1763403701031
+          isPrivate: false
+          description: ""
+          sortKey: -1763403691792
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/nomina/total-dias
+        name: Total de Días de Vacaciones Disponibles
+        meta:
+          id: req_bdc2fd69ac79436a9f3a24cf674d59c8
+          created: 1763404192168
+          modified: 1763404248955
+          isPrivate: false
+          description: "Resultado Esperado: 200 OK. Un JSON con la suma total de días
+            disponibles de todos los empleados que son instancia de Empleado."
+          sortKey: -1763403878386
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/nomina/reporte-dias
+        name: Reporte de Estadísticas de Días
+        meta:
+          id: req_b4834145bdfa4ca3a3235de87acc2220
+          created: 1763404274558
+          modified: 1763404317601
+          isPrivate: false
+          description: "Resultado Esperado: 200 OK. Un JSON con estadísticas clave sobre
+            los días disponibles (total, promedio, máximo, mínimo) de todos los
+            empleados."
+          sortKey: -1763403971683
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - name: Reporte de Empleados por Días Disponibles
+        meta:
+          id: fld_664f99ae75d64017b625a64f9eb46792
+          created: 1763404064980
+          modified: 1763404069346
+          sortKey: -1763404064980
+          description: ""
+        children:
+          - url: http://localhost:8080/api/nomina/empleados-dias
+            name: Busca los empleados con más del umbral definido de días disponibles
+            meta:
+              id: req_a058216240fb46c89d6957f5979ac159
+              created: 1763403819136
+              modified: 1763404168300
+              isPrivate: false
+              description: "Resultado Esperado: 200 OK. Un JSON con una array de objetos,
+                donde solo aparezca el Gerente u otros con saldo superior a 20."
+              sortKey: -1763404067990
+            method: GET
+            parameters:
+              - name: umbral
+                value: "20"
+                disabled: false
+                id: pair_955f2736f75541f1b134fe467cf863da
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/nomina/empleados-dias
+            name: Buscar empleados con 0 días
+            meta:
+              id: req_e64585adf0cf4933818bed7daec935b8
+              created: 1763404097134
+              modified: 1763404147226
+              isPrivate: false
+              description: "Resultado Esperado: 200 OK. Un JSON que liste a todos los objetos
+                que son instancia de Empleado o sus subclases."
+              sortKey: -1763404097134
+            method: GET
+            parameters:
+              - name: umbral
+                value: "0"
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+  - name: RemuneracionesController
+    meta:
+      id: fld_f66c319d63c645c089a90b0cd175fed2
+      created: 1763359812334
+      modified: 1763676693404
+      sortKey: -1763359812334
+      description: ""
+    children:
+      - url: http://localhost:8080/api/remuneraciones/total-dias-disponibles
+        name: Totales de Días Disponibles p/ Empleados
+        meta:
+          id: req_96715759778c48748527693f077582a6
+          created: 1763404955540
+          modified: 1763404990673
+          isPrivate: false
+          description: ""
+          sortKey: -1763404955540
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/remuneraciones/total-dias-solicitados
+        name: Totales de Días De Vacaciones Solicitados por Empleados
+        meta:
+          id: req_0c043b5cbbf4434085e4a3be8bc6638d
+          created: 1763404984856
+          modified: 1763405018005
+          isPrivate: false
+          description: ""
+          sortKey: -1763404984856
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/remuneraciones/estadisticas-vacaciones
+        name: Estadísticas de Vacaciones
+        meta:
+          id: req_df62fd6d6f5a4b06a4a38dc19964c70a
+          created: 1763406197340
+          modified: 1763406208712
+          isPrivate: false
+          description: Genera un resumen JSON con promedio, máximo y mínimo de días
+            disponibles.
+          sortKey: -1763406197340
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/remuneraciones/reporte-completo
+        name: Reporte Completo de Nómina
+        meta:
+          id: req_e31a6a1d7f904d19a87cbc428f2baf02
+          created: 1763406233102
+          modified: 1763406244756
+          isPrivate: false
+          description: Genera un JSON con la información detallada (incluyendo días
+            disponibles y solicitados) de todos los empleados.
+          sortKey: -1763406233102
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - name: Reportes Detallados por Umbral (Filtros)
+        meta:
+          id: fld_cb1646a08ca6459d80a4a7d142aa25bb
+          created: 1763406084137
+          modified: 1763406084137
+          sortKey: -1763406084137
+          description: ""
+        children:
+          - url: http://localhost:8080/api/remuneraciones/empleados-dias-disponibles
+            name: Empleados con Saldo Disponible Alto (Umbral 10 días)
+            meta:
+              id: req_54edd9c139164ed18802f7f1591cc64e
+              created: 1763406095236
+              modified: 1763406148984
+              isPrivate: false
+              description: Busca todos los empleados que tienen más de 10 días de vacaciones
+                disponibles.
+              sortKey: -1763406095236
+            method: GET
+            parameters:
+              - name: umbral
+                value: "10"
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/api/remuneraciones/empleados-dias-solicitados
+            name: Empleados con Alto Uso de Días Solicitados (Umbral 5 días)
+            meta:
+              id: req_7cd56064ff764383aa1fa91ceb8075da
+              created: 1763406125794
+              modified: 1763406142471
+              isPrivate: false
+              description: Busca todos los empleados que han solicitado más de 5 días de
+                vacaciones este año.
+              sortKey: -1763406125794
+            method: GET
+            parameters:
+              - name: umbral
+                value: "5"
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_ccd3671fd817986408ffd5ae567f1c3b37e86f47
+    created: 1763359664256
+    modified: 1763359664256
+environments:
+  name: Base Environment
+  meta:
+    id: env_ccd3671fd817986408ffd5ae567f1c3b37e86f47
+    created: 1763359664254
+    modified: 1763359664254
+    isPrivate: false
