@@ -49,15 +49,18 @@ La arquitectura sigue el patrón MVC y se extiende para manejar complejidad de n
             
 - **Interfaces de Negocio:** `py.edu.uc.jpasseratplp32025.interfaces.Permisionable`, `py.edu.uc.jpasseratplp32025.interfaces.AprobadoGerencial`, `py.edu.uc.jpasseratplp32025.interfaces.Mapeable`
     
-### Componentes de Servicio
+### Descripción de las Capas del Proyecto
 
-| **Capa/Paquete** | **Clases relevantes**                                                                                                                                                                                                                                | **Descripción**                                                                                                               |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **`controller`** | `BaseEmpleadoController`, `GerenteController`,<br>`ContratistaController`,<br>`PersonaController`,<br>`EmpleadoPorHorasController`,<br>`EmpleadoTiempoCompletoController`,<br>`NominaController`,<br>`RemuneracController`,<br>`IndexController`<br> | Jerarquía REST para manejar operaciones CRUD y la solicitud de permisos (`procesarSolicitudPermiso`).                         |
-| **`exception`**  | `GlobalExceptionHandler`, `DiasInsuficientesException`, `FechaNacimientoFuturaException`, `EmpleadoNoEncontradoException`, `PermisoNoConcedidoException`                                                                                             | Manejo de errores centralizado, asegurando respuestas JSON (4xx/5xx).                                                         |
-| **`mapper`**     | `BaseMapper`, `GerenteMapper`, `EmpleadoIntegracionMapper`, `IntegracionMapper`, `EmpleadoPorHoraMapper`, `EmpleadoTiempoCompletoMapper`                                                                                                             | Jerarquía para mapear entidades y DTOs, especialmente en integración de datos (e.g., `EmpleadoExterno` a entidades internas). |
-| **`service`**    | `GerenteService`, `EmpleadoTiempoCompletoService`, `EmpleadoPorHoraService`, `ContratistaService`, `NominaService`, `RemuneracionesService`, `PersonaService`                                                                                        | Contiene la lógica de negocio, validaciones complejas (ej. _batch_ de empleados, días de permiso).                            |
-| **`util`**       | `NominaUtils`, `MapeableFactory`, `MapeableProcessor`                                                                                                                                                                                                | Utilidades estáticas para cálculos de nómina, días de permiso y generación de reportes.                                       |
+| **Capa/Paquete** | **Clases relevantes**                                                                                                                                                                                                                                | **Descripción**                                                                                                                                                                                                                                                    |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`controller`** | `BaseEmpleadoController`, `GerenteController`,<br>`ContratistaController`,<br>`PersonaController`,<br>`EmpleadoPorHorasController`,<br>`EmpleadoTiempoCompletoController`,<br>`NominaController`,<br>`RemuneracController`,<br>`IndexController`<br> | Jerarquía REST para manejar operaciones CRUD y la solicitud de permisos (`procesarSolicitudPermiso`).                                                                                                                                                              |
+| `dto`            | `BaseDto`, `EmpleadoDto`, `EmpleadoExterno`, `EmpleadoTiempoCompletoDto`, `ErrorResponseDto`, `SaludoDto`, `SolicitudPermisoDto`                                                                                                                     | **Objetos de transferencia usados para comunicar datos entre el cliente y la API.** Evitan exponer entidades internas, permiten validación de entrada, y estructuran la carga útil para diferentes tipos de empleado, solicitudes y respuestas de error.           |
+| **`exception`**  | `GlobalExceptionHandler`, `DiasInsuficientesException`, `FechaNacimientoFuturaException`, `EmpleadoNoEncontradoException`, `PermisoNoConcedidoException`                                                                                             | Manejo de errores centralizado, asegurando respuestas JSON (4xx/5xx).                                                                                                                                                                                              |
+| **`mapper`**     | `BaseMapper`, `GerenteMapper`, `EmpleadoIntegracionMapper`, `IntegracionMapper`, `EmpleadoPorHoraMapper`, `EmpleadoTiempoCompletoMapper`                                                                                                             | Jerarquía para mapear entidades y DTOs, especialmente en integración de datos (e.g., `EmpleadoExterno` a entidades internas).                                                                                                                                      |
+| **`service`**    | `GerenteService`, `EmpleadoTiempoCompletoService`, `EmpleadoPorHoraService`, `ContratistaService`, `NominaService`, `RemuneracionesService`, `PersonaService`                                                                                        | Contiene la lógica de negocio, validaciones complejas (ej. _batch_ de empleados, días de permiso).                                                                                                                                                                 |
+| **`util`**       | `NominaUtils`, `MapeableFactory`, `MapeableProcessor`                                                                                                                                                                                                | Utilidades estáticas para cálculos de nómina, días de permiso y generación de reportes.                                                                                                                                                                            |
+| `repository`     | `ContratistaRepository`, `EmpleadoPorHorasRepository`, `EmpleadoTiempoCompletoRepository`, `GerenteRepository`, `PersonaRepository`                                                                                                                  | **Interfaces que extienden `JpaRepository` o `CrudRepository`, proporcionando operaciones CRUD automáticas** (como `findAll`, `findById`, `save`, `delete`). Definen consultas especializadas cuando es necesario y actúan como capa de acceso a la base de datos. |
+| `model`          | `Avatar`, `PosicionGPS`                                                                                                                                                                                                                              | **Objetos del dominio que representan modelos auxiliares o embebidos**, como datos de ubicación (`PosicionGPS`) o recursos visuales (`Avatar`). Suelen utilizarse dentro de entidades principales o para enriquecer la información del empleado.                   |
 
 ---
 
@@ -98,22 +101,24 @@ Nota: usar header `Content-Type: application/json`. Fechas en formato ISO `yyyy-
 |---|---|
 |`POST /api/gerentes`|Crea un nuevo Gerente.|
 |`PUT /api/gerentes/{id}`|Actualiza datos de un Gerente.|
-|`POST /api/gerentes/{id}/solicitar-permiso`|Solicita permiso para un Gerente (no aplica límite de días).|
+|`POST /api/gerentes/{id}/permiso`|Solicita permiso para un Gerente (no aplica límite de días).|
 |`GET /api/gerentes/{id}/nomina-departamento`|Calcula la nómina total del departamento a cargo del Gerente.|
 
 **Ejemplo de Creación de Gerente:**
 
 ```bash
-curl -X POST http://localhost:8080/api/gerentes \
-  -H "Content-Type: application/json" \
-  -d '{
-    "nombre":"Carla",
-    "apellido":"Méndez",
-    "fechaDeNacimiento":"1988-11-10",
-    "numeroDeCedula":"9876543",
-    "fechaIngreso":"2015-06-01",
-    "departamentoACargo":"IT"
-  }'
+curl --request POST \
+  --url http://localhost:8080/api/gerentes \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"nombre": "Filippi", 
+	"apellido": "Menchi", 
+	"numeroDeCedula": "6666666",
+	"fechaDeNacimiento": "2000-05-15",
+	"fechaIngreso": "2030-06-01", 
+	"departamentoACargo": "Finanzas",
+	"fechaFinContrato": "2031-12-31"
+}'
 ```
 
 ### 2. Gestión de Contratistas
@@ -125,23 +130,27 @@ curl -X POST http://localhost:8080/api/gerentes \
 |`GET /api/contratistas/{id}`|Obtiene un Contratista por ID (lanza `EmpleadoNoEncontradoException` si no existe).|
 |`PUT /api/contratistas/{id}`|Actualiza un Contratista (aplica validación de `fechaDeNacimiento`).|
 |`DELETE /api/contratistas/{id}`|Elimina un Contratista.|
-|`POST /api/contratistas/{id}/solicitar-permiso`|Solicita permiso para el Contratista. **Aplica límite de 20 días/año.**|
+|`POST /api/contratistas/{id}/permiso`|Solicita permiso para el Contratista. **Aplica límite de 20 días/año.**|
 |`GET /api/contratistas/vigentes`|Lista los Contratistas con contratos activos.|
 |`GET /api/contratistas/nomina-total`|Calcula la nómina total para todos los Contratistas.|
 
-**Ejemplo de Creación de Contratista**
+**Ejemplo de Creación de un empleado de tipo Contratista**
 
 ```bash
-curl -X POST http://localhost:8080/api/contratistas \
-  -H "Content-Type: application/json" \
-  -d '{
-    "nombre":"Marta",
-    "apellido":"Ríos",
-    "fechaDeNacimiento":"1995-03-25",
-    "numeroDeCedula":"10203040",
-    "fechaInicioContrato":"2024-01-01",
-    "fechaFinContrato":"2024-12-31"
-  }'
+curl --request POST \
+  --url http://localhost:8080/api/contratistas \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"nombre": "Piki",
+	"apellido": "Gomez",
+	"numeroDeCedula": "9999919",
+	"fechaDeNacimiento": "1999-05-20",
+	"fechaIngreso": "2024-01-01",
+	"diasVacacionesAcumulados": 10,
+	"montoPorProyecto": 2000000,
+	"proyectosCompletados": 5,
+	"fechaFinContrato": "2026-06-30"
+}'
 ```
 
 ### 3. Gestión de Empleados de Tiempo Completo
@@ -154,26 +163,28 @@ curl -X POST http://localhost:8080/api/contratistas \
 |`GET /api/empleados/{id}`|Obtiene un Empleado por ID.|
 |`PUT /api/empleados/{id}`|Actualiza un Empleado (aplica validación de `fechaDeNacimiento`).|
 |`DELETE /api/empleados/{id}`|Elimina un Empleado.|
-|`POST /api/empleados/{id}/solicitar-permiso`|Solicita permiso para el Empleado. **Aplica límite de 20 días/año.**|
+|`POST /api/empleados/{id}/permiso`|Solicita permiso para el Empleado. **Aplica límite de 20 días/año.**|
 |`GET /api/empleados/{id}/salario-neto`|Calcula el salario neto después de deducciones.|
 |`GET /api/empleados/{id}/impuestos`|Devuelve información detallada del impuesto en un DTO.|
 |`GET /api/empleados/departamento?nombre=X`|Busca empleados por departamento.|
 |`GET /api/empleados/vigentes`|Lista empleados con contratos vigentes.|
 |`GET /api/empleados/nomina-total`|Calcula la nómina total para Empleados de Tiempo Completo.|
 
-**Ejemplo de Creación de Empleado de Tiempo Completo**
+**Ejemplo de Creación de un empleado de tipo EmpleadoTiempoCompleto**
 
 ```bash
-curl -X POST http://localhost:8080/api/empleados \
-  -H "Content-Type: application/json" \
-  -d '{
-    "nombre":"Luis",
-    "apellido":"López",
-    "fechaDeNacimiento":"1993-01-22",
-    "numeroDeCedula":"63890123",
-    "salarioMensual":3000000,
-    "departamento":"Marketing"
-  }'
+curl --request POST \
+  --url http://localhost:8080/api/empleados \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"nombre": "Carla",
+	"apellido": "Mendez",
+	"numeroDeCedula": "555",
+	"fechaDeNacimiento": "2000-11-17",
+	"salarioMensual": 6000000,
+	"departamento": "IT",
+	"fechaFinContrato": "2029-01-01"
+}'
 ```
 
 ### 4. Gestión de Empleados Por Hora
@@ -185,7 +196,7 @@ curl -X POST http://localhost:8080/api/empleados \
 |`GET /api/empleados-por-hora/{id}`|Obtiene un Empleado por ID.|
 |`PUT /api/empleados-por-hora/{id}`|Actualiza un Empleado (aplica validación de `fechaDeNacimiento`).|
 |`DELETE /api/empleados-por-hora/{id}`|Elimina un Empleado.|
-|`POST /api/empleados-por-hora/{id}/solicitar-permiso`|Solicita permiso para el Empleado. **Aplica límite de 20 días/año.**|
+|`POST /api/empleados-por-hora/{id}/permiso`|Solicita permiso para el Empleado. **Aplica límite de 20 días/año.**|
 |`GET /api/empleados-por-hora/consulta?horas=X`|Lista empleados que hayan trabajado más de un número de horas específico.|
 |`GET /api/empleados-por-hora/vigentes`|Lista empleados con contratos vigentes.|
 |`GET /api/empleados-por-hora/nomina-total`|Calcula la nómina total para Empleados por Hora.|
@@ -195,26 +206,29 @@ curl -X POST http://localhost:8080/api/empleados \
 ```bash
 curl -X GET "http://localhost:8080/api/empleados-por-hora/consulta?horas=40"
 ```
+> Para obtener una respuesta con este ejemplo asegurarse de tener al menos un empleado por hora con una cantidad de horas mayor o igual a la especificada, en este caso 40 horas.
 
 ### 5. Solicitud de Permisos (Validación de Días)
 
 |**Endpoint**|**Descripción**|
 |---|---|
-|`POST /api/empleados/{id}/solicitar-permiso`|Solicita permiso para Empleados de Tiempo Completo.|
-|`POST /api/contratistas/{id}/solicitar-permiso`|Solicita permiso para Contratistas.|
-|`POST /api/empleados-por-hora/{id}/solicitar-permiso`|Solicita permiso para Empleados por Hora.|
+|`POST /api/empleados/{id}/permiso`|Solicita permiso para Empleados de Tiempo Completo.|
+|`POST /api/contratistas/{id}/permiso`|Solicita permiso para Contratistas.|
+|`POST /api/empleados-por-hora/{id}/permiso`|Solicita permiso para Empleados por Hora.|
 
 **Ejemplo de Solicitud de Permiso (puede lanzar DiasInsuficientesException):**
 
 ```bash
-curl -X POST http://localhost:8080/api/empleados/1/solicitar-permiso \
-  -H "Content-Type: application/json" \
-  -d '{
-    "fechaInicio":"2025-12-01",
-    "fechaFin":"2025-12-05",
-    "tipoPermiso":"VACACIONES"
-  }'
+curl --request POST \
+  --url http://localhost:8080/api/empleados/1/permisos \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"fechaInicio": "2026-04-01",
+	"fechaFin": "2026-04-10",
+	"tipoPermiso": "VACACIONES"
+}'
 ```
+> Para obtener una respuesta con este ejemplo asegurarse de tener creado un empleado de tiempo completo con el id especificado, para este caso se asume que el id es 1.
 
 ### 6. Consultas de Nómina / Utilidades
 
